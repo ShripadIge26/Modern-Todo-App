@@ -1,0 +1,79 @@
+body {
+    color: white;
+}
+
+.col {
+    padding: 0;
+}
+
+.row {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-colum1 {
+    padding: 3rem 4rem;
+}
+
+.logo-image {
+    max-width: 7rem;
+}
+
+.subscribe-button {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    background-color: var(--accent-yellow);
+    padding: 0.7rem 2rem;
+    border-radius: 0.2rem;
+    border: none;
+}
+
+.title-row .col h1 {
+    font-size: 4rem;
+}
+
+.title-row .col h2 {
+    opacity: 0.6;
+}
+
+.task-input-row input{
+    background-color: var(--dark-blue);
+    border: none;
+    outline: none;
+    color: white;
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    text-transform: uppercase;
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.task-input-row button {
+    aspect-ratio: 1/1;
+    height: 100%;
+    border: none;
+    background-color: var(--dark-blue);
+    color: white;
+}
+
+.task-wrapper-col {
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    padding-right: 1rem;
+}
+
+.my-tasks-heading {
+    opacity: 0.6;
+}
+
+.active-task-list ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: unset;
+}
+
+.active-task-para {
+    text-transform: uppercase;
+    margin-bottom: unset;
+}
