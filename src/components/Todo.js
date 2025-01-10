@@ -1,7 +1,44 @@
 import logo from '../images/todo-logo-grad.svg'
 import ListItem from './ListItem'
+import {useRef, useState} from 'react'
 
 const Todo = () => {
+    console.log('render');
+    const inputRef = useRef(null);
+    const [tasks, setTasks] = useState([]);
+    const [editableIndex, setEditableIndex] = useState(null);
+    const [editedText, setEditedText] = useState("");
+
+    const addNewTask = () => {
+        let currentTask = inputRef.current.value; 
+
+        if(currentTask.trim()) {
+            setTasks([...tasks, currentTask]);
+            inputRef.current.value = "";
+            inputRef.current.focus();
+        }
+        console.log(tasks);
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            addNewTask();
+        }
+    }
+
+    const editText = (index) => {
+        setEditableIndex(index);
+        setEditedText(tasks[index]);
+    }
+
+    const saveText = (editedText) => {
+        if (editedText.trim()) {
+            setTasks(tasks.map((task, index) => (index === editableIndex ? editedText : task)));
+            setEditableIndex(null);
+            setEditedText("");
+        }
+    }
+
     return (
         <div className="container-fluid main-colum1 d-flex align-items-between flex-column gap-5">
             <div className="row main-first-row mx-0">
@@ -11,7 +48,7 @@ const Todo = () => {
                 </div>
             </div>
 
-            <div className="row main-second-row mx-0 d-flex overflow-hidden">
+            <div className="row main-second-row mx-0 d-flex overflow-hidden flex-grow-1">
                 <div className="col max-h-100 main-content-wrapper d-flex flex-column">
                     <div className="row title-row mx-0">
                         <div className="col text-start">
@@ -25,14 +62,14 @@ const Todo = () => {
                             <h2 className='h2 fw-light mb-0'>FINISHED TASKS</h2>
                         </div>
                     </div>
-                    <div className="row mx-0 max-h-100 d-flex overflow-hidden">
+                    <div className="row mx-0 max-h-100 d-flex overflow-hidden flex-grow-1">
                         <div className="col col-8 d-flex flex-column task-wrapper-col max-h-100">
                             <div className="row task-input-row mx-0">
                                 <div className="col col-11 text-start">
-                                    <input type='text' placeholder='START TYPING HERE...' className='rounded' />
+                                    <input ref={inputRef} onKeyDown={handleKeyPress} type='text' placeholder='START TYPING HERE...' className='rounded'name='taskInput' />
                                 </div>
                                 <div className="col col-1">
-                                    <button className='rounded'>+</button>
+                                    <button onClick={addNewTask} className='rounded'>+</button>
                                 </div>
                             </div>
                             <div className="row my-tasks-heading mx-0 my-4">
@@ -41,24 +78,14 @@ const Todo = () => {
                                 </div>
                             </div>
 
-                            <div className="row active-task-list max-h-100 d-flex mx-0 overflow-hidden">
+                            <div className="row active-task-list max-h-100 d-flex mx-0 overflow-hidden flex-grow-1">
                                 <div className="col max-h-100  d-flex flex-column">
                                     <ul className='d-flex max-h-100   flex-column gap-2'>
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
-                                        <ListItem />
+                                        {
+                                            tasks.length === 0 ? <li className='h-100 d-flex align-items-center justify-content-center'>No Tasks Found</li> : (
+                                                tasks.map((item, index) => (<ListItem key={index} editText={editText} index={index} task={item} editableIndex={editableIndex} editedText={editedText} setEditedText={setEditedText} saveText={saveText}/>))
+                                            )
+                                        }
                                     </ul>
                                 </div>
                             </div>

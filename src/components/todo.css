@@ -159,3 +159,11 @@ body {
 .max-h-100 {
     max-height: 100%;
 }
+
+.editable-li-input {
+    background-color: rgba(17, 26, 38, 0.3);
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    outline: none;
+}
