@@ -167,3 +167,24 @@ body {
     text-transform: uppercase;
     outline: none;
 }
+
+.task-complete-radio-btn:checked {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    border: 1px solid #324a62;
+    
+}
+
+
+
+.task-complete-radio-btn:focus {
+    box-shadow: none;
+    border: 1px solid #324a62;
+}
+
+
+
+.task-complete-radio-btn {
+    background-color: var(--dark-blue);
+    border: 1px solid #324a62;
+}

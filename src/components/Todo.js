@@ -6,8 +6,10 @@ const Todo = () => {
   console.log("render");
   const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
+  const [finishedTasks, setFinishedTasks] = useState([]);
   const [editableIndex, setEditableIndex] = useState(null);
   const [editedText, setEditedText] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
 
   const addNewTask = () => {
     let currentTask = inputRef.current.value;
@@ -25,6 +27,11 @@ const Todo = () => {
         handleFunction();
     }
   };
+
+  const handleCheckbox = (e, index) => {
+    setIsChecked(e.target.checked);
+    console.log(isChecked, index)
+  }
 
   const editText = (index) => {
     setEditableIndex(index);
@@ -119,6 +126,8 @@ const Todo = () => {
                           saveTask={saveTask}
                           deleteTask={deleteTask}
                           handleKeyPress={handleKeyPress}
+                          handleCheckbox={handleCheckbox}
+                          isChecked={isChecked}
                         />
                       ))
                     )}
