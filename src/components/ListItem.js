@@ -20,12 +20,12 @@ const ListItem = ({
       <div className="row task-list-main-row mx-0">
         <div className="row justify-content-between align-items-center mx-0">
           <div className="col col-1">
-            <input type="checkbox" className="task-complete-radio-btn form-check-input" onChange={handleCheckbox} checked={isChecked[index]}/>
+            <input type="checkbox" className="task-complete-radio-btn form-check-input" onChange={handleCheckbox} checked={isChecked}/>
           </div>
           <div className="col d-flex gap-2">
             {/* <p className="mb-0 text-right text-decoration-line-through">{index + 1}.</p> */}
             {editableIndex !== index ? (
-              <p className={`active-task-para text-break text-start ${isChecked[index] ? "text-decoration-line-through" : ''} `}>{task}</p>
+              <p className={`active-task-para text-break text-start ${isChecked ? "text-decoration-line-through" : ''} `}>{task}</p>
             ) : (
               <input
                 type="text"
@@ -46,7 +46,7 @@ const ListItem = ({
               </button>
             ) : (
               <button className="save-button rounded" onClick={saveTask}>
-                <img src={tickIcon} alt="save-icon" />
+                <img src={tickIcon} alt="save-icon"/>
               </button>
             )}
 
@@ -54,7 +54,7 @@ const ListItem = ({
               className="delete-button rounded"
               onClick={() => deleteTask(index)}
             >
-              <img src={deleteIcon} alt="delete-icon" />
+              <img src={deleteIcon} alt="delete-icon"/>
             </button>
           </div>
         </div>
