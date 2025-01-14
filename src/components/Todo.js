@@ -3,46 +3,52 @@ import ListItem from "./ListItem";
 import { useRef, useState } from "react";
 
 const Todo = () => {
-  console.log("render");
   const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
-  const [finishedTasks, setFinishedTasks] = useState([]);
   const [editableIndex, setEditableIndex] = useState(null);
   const [editedText, setEditedText] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
 
   const addNewTask = () => {
     let currentTask = inputRef.current.value;
 
     if (currentTask.trim()) {
-      setTasks([...tasks, currentTask]);
+      const newTask = {
+        id: Date.now(),
+        text: currentTask.trim(),
+        isCompleted: false,
+      };
+
+      setTasks([...tasks, newTask]);
       inputRef.current.value = "";
       inputRef.current.focus();
     }
-    console.log(tasks);
   };
 
   const handleKeyPress = (e, handleFunction) => {
     if (e.key === "Enter") {
-        handleFunction();
+      handleFunction();
     }
   };
 
-  const handleCheckbox = (e, index) => {
-    setIsChecked(e.target.checked);
-    console.log(isChecked, index)
-  }
+  const handleCheckbox = (taskId) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
+      )
+    );
+  };
 
-  const editText = (index) => {
-    setEditableIndex(index);
-    setEditedText(tasks[index]);
+  const editText = (id) => {
+    setEditableIndex(id);
+    const taskToEdit = tasks.find((task) => task.id === id);
+    setEditedText(taskToEdit.text);
   };
 
   const saveTask = () => {
     if (editedText.trim()) {
       setTasks(
-        tasks.map((task, index) =>
-          index === editableIndex ? editedText : task
+        tasks.map((task) =>
+          task.id === editableIndex ? { ...task, text: editedText.trim() } : task
         )
       );
       setEditableIndex(null);
@@ -50,9 +56,9 @@ const Todo = () => {
     }
   };
 
-  const deleteTask = (currentIndex) => {
-    setTasks(tasks.filter((_, index) => index !== currentIndex ))
-  }
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
 
   return (
     <div className="container-fluid main-colum1 d-flex align-items-between flex-column gap-5">
@@ -75,12 +81,7 @@ const Todo = () => {
               <h2 className="h2 fw-light">OWN YOUR GOALS</h2>
             </div>
           </div>
-          <div className="row">
-            <div className="col col-8"></div>
-            <div className="col col-4">
-              <h2 className="h2 fw-light mb-0">FINISHED TASKS</h2>
-            </div>
-          </div>
+
           <div className="row mx-0 max-h-100 d-flex overflow-hidden flex-grow-1">
             <div className="col col-8 d-flex flex-column task-wrapper-col max-h-100">
               <div className="row task-input-row mx-0">
@@ -101,41 +102,67 @@ const Todo = () => {
                 </div>
               </div>
               <div className="row my-tasks-heading mx-0 my-4">
-                <div className="col text-start">    
+                <div className="col text-start">
                   <h2 className="h2 fw-light mb-0">ACTIVE TASKS</h2>
                 </div>
               </div>
-
               <div className="row active-task-list max-h-100 d-flex mx-0 overflow-hidden flex-grow-1">
                 <div className="col max-h-100  d-flex flex-column">
                   <ul className="d-flex max-h-100   flex-column gap-2">
-                    {tasks.length === 0 ? (
+                    {tasks.filter((task) => !task.isCompleted).length === 0 ? (
                       <li className="h-100 d-flex align-items-center justify-content-center">
                         No Tasks Found
                       </li>
                     ) : (
-                      tasks.map((item, index) => (
-                        <ListItem
-                          key={index}
-                          editText={editText}
-                          index={index}
-                          task={item}
-                          editableIndex={editableIndex}
-                          editedText={editedText}
-                          setEditedText={setEditedText}
-                          saveTask={saveTask}
-                          deleteTask={deleteTask}
-                          handleKeyPress={handleKeyPress}
-                          handleCheckbox={handleCheckbox}
-                          isChecked={isChecked}
-                        />
-                      ))
+                      tasks
+                        .filter((task) => !task.isCompleted)
+                        .map((item) => (
+                          <ListItem
+                            key={item.id}
+                            editText={editText}
+                            task={item}
+                            editableIndex={editableIndex}
+                            editedText={editedText}
+                            setEditedText={setEditedText}
+                            saveTask={saveTask}
+                            deleteTask={deleteTask}
+                            handleKeyPress={handleKeyPress}
+                            handleCheckbox={handleCheckbox}
+                          />
+                        ))
                     )}
                   </ul>
                 </div>
               </div>
             </div>
-            <div className="col col-4"></div>
+
+            <div className="col col-4">
+              <h2 className="h2 fw-light mb-0">FINISHED TASKS</h2>
+              <ul className="d-flex max-h-100 flex-column gap-2">
+                {tasks.filter((task) => task.isCompleted).length === 0 ? (
+                  <li className="h-100 d-flex align-items-center justify-content-center">
+                    No Finished Tasks
+                  </li>
+                ) : (
+                  tasks
+                    .filter((task) => task.isCompleted)
+                    .map((item) => (
+                      <ListItem
+                        key={item.id}
+                        editText={editText}
+                        task={item}
+                        editableIndex={editableIndex}
+                        editedText={editedText}
+                        setEditedText={setEditedText}
+                        saveTask={saveTask}
+                        deleteTask={deleteTask}
+                        handleKeyPress={handleKeyPress}
+                        handleCheckbox={handleCheckbox}
+                      />
+                    ))
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

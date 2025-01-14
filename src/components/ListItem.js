@@ -3,7 +3,6 @@ import deleteIcon from "../images/delete-bin-icon.svg";
 import tickIcon from "../images/tick-icon.svg";
 
 const ListItem = ({
-  index,
   task,
   editText,
   editableIndex,
@@ -12,20 +11,29 @@ const ListItem = ({
   saveTask,
   deleteTask,
   handleKeyPress,
-  isChecked,
-  handleCheckbox
+  handleCheckbox,
 }) => {
   return (
     <li className="">
       <div className="row task-list-main-row mx-0">
         <div className="row justify-content-between align-items-center mx-0">
           <div className="col col-1">
-            <input type="checkbox" className="task-complete-radio-btn form-check-input" onChange={handleCheckbox} checked={isChecked}/>
+            <input
+              type="checkbox"
+              className="task-complete-radio-btn form-check-input"
+              onChange={() => handleCheckbox(task.id)}
+              checked={task.isCompleted}
+            />
           </div>
           <div className="col d-flex gap-2">
-            {/* <p className="mb-0 text-right text-decoration-line-through">{index + 1}.</p> */}
-            {editableIndex !== index ? (
-              <p className={`active-task-para text-break text-start ${isChecked ? "text-decoration-line-through" : ''} `}>{task}</p>
+            {editableIndex !== task.id ? (
+              <p
+                className={`active-task-para text-break text-start ${
+                  task.isCompleted ? "text-decoration-line-through" : ""
+                }`}
+              >
+                {task.text}
+              </p>
             ) : (
               <input
                 type="text"
@@ -37,24 +45,24 @@ const ListItem = ({
             )}
           </div>
           <div className="col col-2 d-flex justify-content-between">
-            {editableIndex !== index ? (
+            {editableIndex !== task.id ? (
               <button
                 className="edit-button rounded"
-                onClick={() => editText(index)}
+                onClick={() => editText(task.id)}
               >
                 <img src={editIcon} alt="edit-icon" />
               </button>
             ) : (
               <button className="save-button rounded" onClick={saveTask}>
-                <img src={tickIcon} alt="save-icon"/>
+                <img src={tickIcon} alt="save-icon" />
               </button>
             )}
 
             <button
               className="delete-button rounded"
-              onClick={() => deleteTask(index)}
+              onClick={() => deleteTask(task.id)}
             >
-              <img src={deleteIcon} alt="delete-icon"/>
+              <img src={deleteIcon} alt="delete-icon" />
             </button>
           </div>
         </div>
